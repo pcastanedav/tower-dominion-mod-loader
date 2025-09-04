@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <Reference Include="0Harmony">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\net6\0Harmony.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\Il2CppAssemblies\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="Il2CppCopper.ViewManager.Code">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\Il2CppAssemblies\Il2CppCopper.ViewManager.Code.dll</HintPath>
+        </Reference>
+        <Reference Include="Il2CppInterop.Runtime">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\net6\Il2CppInterop.Runtime.dll</HintPath>
+        </Reference>
+        <Reference Include="Il2Cppmscorlib">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\Il2CppAssemblies\Il2Cppmscorlib.dll</HintPath>
+        </Reference>
+        <Reference Include="Il2CppSystem.Core">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\Il2CppAssemblies\Il2CppSystem.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="Il2CppSystem.Drawing">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\Il2CppAssemblies\Il2CppSystem.Drawing.dll</HintPath>
+        </Reference>
+        <Reference Include="MelonLoader">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\net6\MelonLoader.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Addressables">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\Il2CppAssemblies\Unity.Addressables.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Localization">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\Il2CppAssemblies\Unity.Localization.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.ResourceManager">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\Il2CppAssemblies\Unity.ResourceManager.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.TextMeshPro">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\Il2CppAssemblies\Unity.TextMeshPro.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.AssetBundleModule">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\Il2CppAssemblies\UnityEngine.AssetBundleModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\Il2CppAssemblies\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.TextCoreTextEngineModule">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\Il2CppAssemblies\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.TextRenderingModule">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\Il2CppAssemblies\UnityEngine.TextRenderingModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\Il2CppAssemblies\UnityEngine.UI.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UIModule">
+            <HintPath>$(GameAbsoluteDir)\MelonLoader\Il2CppAssemblies\UnityEngine.UIModule.dll</HintPath>
+        </Reference>
+        </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" />
+      <PackageReference Include="System.Collections.Immutable" Version="6.0.0" />
+    </ItemGroup>
+</Project>

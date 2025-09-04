@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+CONFIG_FILE="$PROJECT_ROOT/Directory.Build.props"
+
+# Function to extract GameAbsoluteDir from Directory.Build.props
+get_game_dir_from_config() {
+    if [ ! -f "$CONFIG_FILE" ]; then
+        echo "Error: Directory.Build.props not found. Run 'make conf' first."
+        exit 1
+    fi
+    
+    # Extract the GameAbsoluteDir value using grep and sed
+    GAME_DIR=$(grep -o '<GameAbsoluteDir>.*</GameAbsoluteDir>' "$CONFIG_FILE" | sed 's/<GameAbsoluteDir>//g' | sed 's/<\/GameAbsoluteDir>//g')
+    
+    if [ -z "$GAME_DIR" ]; then
+        echo "Error: GameAbsoluteDir not found in Directory.Build.props"
+        exit 1
+    fi
+    
+    if [ ! -d "$GAME_DIR" ]; then
+        echo "Error: Game directory does not exist: $GAME_DIR"
+        exit 1
+    fi
+}
+
+# Download and install MelonLoader
+install_melonloader() {
+    local temp_file="/tmp/MelonLoader.x64.zip"
+    local download_url="https://github.com/LavaGang/MelonLoader/releases/latest/download/MelonLoader.x64.zip"
+    
+    echo "Downloading MelonLoader from: $download_url"
+    if ! curl -L -o "$temp_file" "$download_url"; then
+        echo "Error: Failed to download MelonLoader"
+        exit 1
+    fi
+    
+    echo "Installing MelonLoader to: $GAME_DIR"
+    if ! unzip -o "$temp_file" -d "$GAME_DIR"; then
+        echo "Error: Failed to extract MelonLoader"
+        rm -f "$temp_file"
+        exit 1
+    fi
+    
+    rm -f "$temp_file"
+    echo "MelonLoader installed successfully!"
+}
+
+# Main execution
+echo "Installing MelonLoader..."
+get_game_dir_from_config
+echo "Game directory: $GAME_DIR"
+install_melonloader

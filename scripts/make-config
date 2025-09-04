@@ -1,0 +1,84 @@
+#!/bin/bash
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Go to the project root (assuming script is in scripts/ subdirectory)
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+CONFIG_FILE="$PROJECT_ROOT/Directory.Build.props"
+
+echo "Project root: $PROJECT_ROOT"
+
+# Function to get path with tab completion
+get_game_path() {
+    echo "Enter Tower Dominion path (tab completion enabled):"
+    echo "Press Ctrl+C to cancel"
+    
+    # Enable filename completion
+    set +H  # Disable history expansion to avoid issues with !
+    
+    while true; do
+        read -e -p "> " GAME_DIR
+        
+        # Expand tilde and variables
+        GAME_DIR=$(eval echo "$GAME_DIR")
+        
+        if [ -d "$GAME_DIR" ]; then
+            echo "Directory exists: $GAME_DIR"
+            break
+        else
+            echo "Directory not found: $GAME_DIR"
+            echo "Please try again (tab completion available):"
+        fi
+    done
+}
+
+# Get GameDir from parameter, env var, or interactive search
+if [ -n "$1" ]; then
+    GAME_DIR="$1"
+elif [ -n "$GAME_DIR" ]; then
+    GAME_DIR="$GAME_DIR"
+else
+    echo "No Tower Dominion path provided."
+    echo "Choose an option:"
+    echo "1) Search automatically for 'Tower Dominion' directory"
+    echo "2) Enter path manually (with tab completion)"
+    read -p "Enter choice (1/2): " -n 1 -r
+    echo
+    
+    if [[ $REPLY =~ ^[1]$ ]]; then
+        echo "Searching for Tower Dominion..."
+        GAME_DIR=$(find /home -name "Tower Dominion" -type d 2>/dev/null | head -1)
+        
+        if [ -z "$GAME_DIR" ]; then
+            echo "Tower Dominion directory not found automatically."
+            echo "Falling back to manual entry..."
+            get_game_path
+        else
+            echo "Found: $GAME_DIR"
+            read -p "Use this path? (y/n): " -n 1 -r
+            echo
+            if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+                get_game_path
+            fi
+        fi
+    else
+        get_game_path
+    fi
+fi
+
+if [ ! -f "$CONFIG_FILE" ]; then
+    cat > "$CONFIG_FILE" << EOF
+<Project>
+    <PropertyGroup>
+        <GameAbsoluteDir>$GAME_DIR</GameAbsoluteDir>
+        <ModsDir>\$(GameAbsoluteDir)/Mods</ModsDir>
+        <PlatformTarget>x64</PlatformTarget>
+        <RestorePackagesPath>\$(MSBuildThisFileDirectory)packages</RestorePackagesPath>
+    </PropertyGroup>
+</Project>
+EOF
+    echo "Created $CONFIG_FILE with GameDir: $GAME_DIR"
+else
+    echo "$CONFIG_FILE already exists"
+fi

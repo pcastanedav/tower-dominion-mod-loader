@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+CONFIG_FILE="$PROJECT_ROOT/Directory.Build.props"
+
+# Function to extract GameAbsoluteDir from Directory.Build.props
+get_game_dir_from_config() {
+    if [ ! -f "$CONFIG_FILE" ]; then
+        echo "Error: Directory.Build.props not found. Run 'make conf' first."
+        exit 1
+    fi
+    
+    # Extract the GameAbsoluteDir value using grep and sed
+    GAME_DIR=$(grep -o '<GameAbsoluteDir>.*</GameAbsoluteDir>' "$CONFIG_FILE" | sed 's/<GameAbsoluteDir>//g' | sed 's/<\/GameAbsoluteDir>//g')
+    
+    if [ -z "$GAME_DIR" ]; then
+        echo "Error: GameAbsoluteDir not found in Directory.Build.props"
+        exit 1
+    fi
+    
+    if [ ! -d "$GAME_DIR" ]; then
+        echo "Error: Game directory does not exist: $GAME_DIR"
+        exit 1
+    fi
+}
+
+# Get game directory and change to it
+get_game_dir_from_config
+echo "Opening Tower Dominion shell in: $GAME_DIR"
+cd "$GAME_DIR"
+
+# Launch bash with custom TD prompt
+exec bash --rcfile <(cat <<'EOF'
+# Load user's bashrc if it exists
+[ -f ~/.bashrc ] && source ~/.bashrc
+
+# Set custom Tower Dominion prompt
+export PS1='\[\033[1;36m\][TD]\[\033[0m\] \[\033[1;32m\]\w\[\033[0m\] $ '
+
+# Add some helpful aliases
+alias ll='ls -la'
+alias mods='cd Mods'
+alias logs='cd MelonLoader/Logs'
+alias back='cd "$OLDPWD"'
+
+# Show welcome message
+echo "=== Tower Dominion Development Shell ==="
+echo "Current directory: $(pwd)"
+echo "Available aliases: mods, logs, back, ll"
+echo "Type 'exit' to return to normal shell"
+echo
+EOF
+)
