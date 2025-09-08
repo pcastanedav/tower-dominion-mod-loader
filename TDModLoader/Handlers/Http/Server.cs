@@ -273,7 +273,7 @@ public class {className}
 
             object result = method.Invoke(instance, null);
 
-            return new { success = true, result = result?.ToString() ?? "null" };
+            return new { success = true, result};
         }
         catch (Exception ex)
         {
