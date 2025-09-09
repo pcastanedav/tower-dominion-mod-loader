@@ -38,6 +38,17 @@ public static class FileSystem
       _indexing = false;
    }
 
+   public static FileStream OpenFile(string name)
+   {
+      var matchingSources = FilesIndex.Keys.Where(fullName => fullName.EndsWith($"${name}.cs")).ToArray();
+      return matchingSources.Length switch
+      {
+         0 => throw new FileNotFoundException("No source file found", name),
+         > 0 => throw new Exception($"Multiple source files found for: ${name}"),
+         _ => new FileStream(matchingSources[0], FileMode.Open)
+      };
+   }
+
    public static bool IsIndexing => _indexing;
    public static bool IsIndexed => _completeIndex;
    

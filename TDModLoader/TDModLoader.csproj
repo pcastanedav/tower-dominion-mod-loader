@@ -71,4 +71,10 @@
     <ItemGroup>
       <Folder Include="Handlers\Code\" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <None Update="Resources\runner.html">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 </Project>
