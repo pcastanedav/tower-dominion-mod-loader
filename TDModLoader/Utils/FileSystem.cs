@@ -1,8 +1,5 @@
-using System.Reflection;
+namespace TDModLoader.Utils;
 using System.Security.Cryptography;
-
-namespace TDModLoader.Handlers.Utils;
-using MelonLoader;
 
 public static class FileSystem
 {

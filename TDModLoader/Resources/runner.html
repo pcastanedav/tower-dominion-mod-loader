@@ -1,89 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>C# Code Evaluator</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
-        .container { display: flex; gap: 20px; height: 90vh; }
-        .panel { background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .left-panel { flex: 1; display: flex; flex-direction: column; }
-        .right-panel { flex: 1; }
-        h1 { margin-top: 0; color: #333; }
-        textarea { width: 100%; height: 70%; border: 1px solid #ddd; border-radius: 4px; padding: 10px; font-family: 'Courier New', monospace; font-size: 14px; resize: none; }
-        button { background: #007acc; color: white; border: none; padding: 12px 24px; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        button:hover { background: #005a9e; }
-        .results { width: 100%; height: 100%; border: 1px solid #ddd; border-radius: 4px; padding: 10px; font-family: 'Courier New', monospace; font-size: 14px; background: #f9f9f9; white-space: pre-wrap; overflow-y: auto; }
-        .loading { color: #666; font-style: italic; }
-        .error { color: #d32f2f; }
-        .success { color: #2e7d32; }
-    </style>
+    <link href="/Resources/runner.css" rel="stylesheet" />
 </head>
 <body>
-<h1>C# Code Evaluator</h1>
-<div class='container'>
-    <div class='panel left-panel'>
-        <h3>Code Input</h3>
-        <textarea id="codeInput" placeholder="Enter C# code here..."></textarea>
-        <button onclick='runCode()'>Run Code</button>
+    <div class="header">
+        <h1>C# Code Evaluator</h1>
     </div>
-    <div class='panel right-panel'>
-        <h3>Results</h3>
-        <div id='results' class='results'>Ready to execute code...</div>
-    </div>
-</div>
+    
+    <div class="container">
+        <div class="panel left-panel" id="leftPanel">
+            <div class="panel-header" onclick="togglePanel('leftPanel')">
+                <h3>Code Editor</h3>
+                <button class="panel-toggle" id="leftToggle">▼</button>
+            </div>
+            <div class="panel-content">
+                <div class="toolbar">
+                    <button class="btn btn-success" id="runButton">
+                        ▶ Run Code
+                    </button>
+                    <button class="btn btn-secondary" id="clearButton">
+                        🗑️ Clear
+                    </button>
+                    <button class="btn btn-secondary" id="formatButton">
+                        📐 Format
+                    </button>
+                    <button class="btn btn-danger" id="stopButton" style="display: none;">
+                        ⏹️ Stop
+                    </button>
+                </div>
+                <textarea id="codeInput" placeholder="Enter your C# code here...
 
-<script>
-    async function runCode() {
-        const code = document.getElementById('codeInput').value;
-        const resultsDiv = document.getElementById('results');
+Example:
+using System;
 
-        if (!code.trim()) {
-            resultsDiv.innerHTML = 'Please enter some code to execute.';
-            resultsDiv.className = 'results error';
-            return;
-        }
-
-        resultsDiv.innerHTML = 'Executing code...';
-        resultsDiv.className = 'results loading';
-
-        try {
-            const response = await fetch('/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ code: code })
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                resultsDiv.innerHTML = `✅ Success!\n\nResult: ${result.result}`;
-                resultsDiv.className = 'results success';
-            } else {
-                let errorMessage = `❌ ${result.error}`;
-                if (result.details) {
-                    if (Array.isArray(result.details)) {
-                        errorMessage += '\n\nDetails:\n' + result.details.join('\n');
-                    } else {
-                        errorMessage += '\n\nDetails:\n' + result.details;
-                    }
-                }
-                resultsDiv.innerHTML = errorMessage;
-                resultsDiv.className = 'results error';
-            }
-        } catch (error) {
-            resultsDiv.innerHTML = `❌ Network Error: ${error.message}`;
-            resultsDiv.className = 'results error';
-        }
+class Program 
+{
+    static void Main() 
+    {
+        Console.WriteLine(&quot;Hello, World!&quot;);
     }
+}"></textarea>
+                <div class="status-bar">
+                    <span id="lineCount">Lines: 1</span>
+                    <span id="charCount">Characters: 0</span>
+                </div>
+            </div>
+            <div class="resize-handle" id="leftResize"></div>
+        </div>
 
-    // Allow Ctrl+Enter to run code
-    document.getElementById('codeInput').addEventListener('keydown', function(e) {
-        if (e.ctrlKey && e.key === 'Enter') {
-            runCode();
-        }
-    });
-</script>
+        <div class="panel right-panel" id="rightPanel">
+            <div class="panel-header" onclick="togglePanel('rightPanel')">
+                <h3>Results</h3>
+                <button class="panel-toggle" id="rightToggle">▼</button>
+            </div>
+            <div class="panel-content">
+                <div class="toolbar">
+                    <button class="btn btn-secondary" id="clearResultsButton">
+                        🗑️ Clear Results
+                    </button>
+                    <button class="btn btn-secondary" id="copyResultsButton">
+                        📋 Copy Results
+                    </button>
+                    <button class="btn btn-secondary" id="expandResultsButton">
+                        ⛶ Expand
+                    </button>
+                </div>
+                <div id="results" class="results">Ready to execute C# code...</div>
+                <div class="status-bar">
+                    <span id="executionTime">Execution time: --</span>
+                    <span id="resultStatus">Status: Ready</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/Resources/runner.js"></script>
 </body>
 </html>

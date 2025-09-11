@@ -3,26 +3,16 @@ namespace TDModLoader.Handlers.Http;
 using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using TDModLoader.Utils;
 
 using Utils;
 public class Code : Base
 {
-    public override async Task HandleRequest(HttpListenerContext context)
+    protected override Task HandleGet(HttpListenerContext context)
     {
-        await (context.Request.HttpMethod switch
-        {
-            "GET" => HandleGet(context),
-            "POST" => HandlePost(context),
-            _ => SendJsonResponse(context.Response, new { error = "Only GET and POST methods supported" },
-                (int)HttpStatusCode.MethodNotAllowed)
-        });
+        return SendJsonResponse(context.Response, new { success = true, message = "Soon" });
     }
-
-    private static Task HandleGet(HttpListenerContext context)
-    {
-        return SendJsonResponse(context.Response, new { success = true, message = "Soon" }, (int) HttpStatusCode.OK);
-    }
-    private static async Task HandlePost(HttpListenerContext context)
+    protected override async Task HandlePost(HttpListenerContext context)
     {
         string requestBody;
         using (var reader = new StreamReader(context.Request.InputStream)) { requestBody = await reader.ReadToEndAsync(); }
@@ -31,12 +21,12 @@ public class Code : Base
 
         if (string.IsNullOrEmpty(requestData?.Code))
         {
-            await SendJsonResponse(context.Response, new { success = false, error = "Code field is required" }, (int) HttpStatusCode.BadRequest);
+            await SendJsonResponse(context.Response, new { success = false, error = "Code field is required" }, HttpStatusCode.BadRequest);
             return;
         }
 
         var result = CodeEvaluator.Execute(requestData.Code);
-        await SendJsonResponse(context.Response, result, (int) HttpStatusCode.OK);
+        await SendJsonResponse(context.Response, result);
     }
 
     internal class CodeRequest

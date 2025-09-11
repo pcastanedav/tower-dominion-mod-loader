@@ -55,3 +55,5 @@ TestResult.xml
 nunit-*.xml
 
 Directory.Build.props
+.idea/
+.run/

@@ -1,4 +1,4 @@
-namespace TDModLoader.Handlers.Utils;
+namespace TDModLoader.Utils;
 using System.Collections.Generic;
 
 public class Bijection<T1, T2>

@@ -3,7 +3,7 @@ using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace TDModLoader.Handlers.Utils;
+namespace TDModLoader.Utils;
 
 public static class CodeEvaluator
 {

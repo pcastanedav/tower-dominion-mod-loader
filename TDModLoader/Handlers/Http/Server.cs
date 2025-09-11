@@ -15,7 +15,7 @@ public class Server: Base
         _handlers = new Dictionary<string, Base>
         {
             { "code", new Code() },
-            { "files", new Files() }
+            { "files", new Manifest() }
         };
     }
 
@@ -41,15 +41,17 @@ public class Server: Base
         try
         {
             Console.WriteLine($"Request: {request.HttpMethod} {request.Url}");
-            Debug.Assert(request.Url != null, "request.Url != null");
-            var handlerId = request.Url.PathAndQuery.Split('/').FirstOrDefault("files");
-            var handler = _handlers[handlerId];
+            var segments = request.Url!.Segments;
+            var handlerId = segments.Length < 2
+                ? "files"
+                : segments[1].Trim('/');
+            var handler = _handlers.ContainsKey(handlerId) ? _handlers[handlerId] : _handlers["files"];
             await handler.HandleRequest(context);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error handling request: {ex.Message}");
-            await SendJsonResponse(response, new { error = ex.Message }, (int) HttpStatusCode.InternalServerError);
+            await SendJsonResponse(response, new { error = ex.Message }, HttpStatusCode.InternalServerError);
         }
     }
 

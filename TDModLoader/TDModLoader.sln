@@ -6,11 +6,14 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		TDTestServer|Any CPU = TDTestServer|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{9067B381-B988-46EC-BA42-A5312D318576}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9067B381-B988-46EC-BA42-A5312D318576}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9067B381-B988-46EC-BA42-A5312D318576}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9067B381-B988-46EC-BA42-A5312D318576}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9067B381-B988-46EC-BA42-A5312D318576}.TDTestServer|Any CPU.ActiveCfg = TDTestServer|Any CPU
+		{9067B381-B988-46EC-BA42-A5312D318576}.TDTestServer|Any CPU.Build.0 = TDTestServer|Any CPU
 	EndGlobalSection
 EndGlobal

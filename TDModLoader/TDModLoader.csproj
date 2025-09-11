@@ -4,7 +4,13 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <Configurations>Debug;Release;TDTestServer</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'TDTestServer'">
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>    
     
     <ItemGroup>
         <Reference Include="0Harmony">
@@ -73,8 +79,17 @@
     </ItemGroup>
     
     <ItemGroup>
-      <None Update="Resources\runner.html">
+      <None Remove="Resources\runner.html" />
+      <EmbeddedResource Include="Resources\runner.html">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
+      </EmbeddedResource>
+      <None Remove="Resources\runner.css" />
+      <EmbeddedResource Include="Resources\runner.css">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="Resources\runner.js" />
+      <EmbeddedResource Include="Resources\runner.js">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 </Project>
